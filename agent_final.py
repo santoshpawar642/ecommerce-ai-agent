@@ -6,7 +6,7 @@ from langgraph.graph import StateGraph, END
 # --- 1. CONFIGURATION ---
 SNOWFLAKE_CONFIG = {
     "user": "SANTO642",              # Ensure this matches your login exactly
-    "password": "YOUR_PASSWORD_HERE", 
+    "password": "YOUR_SNOWFLAKE_PASSWORD", 
     "account": "BIJXYOG-TR26698",    # Try this first
     "warehouse": "COMPUTE_WH",
     "database": "ECOM_DB",
