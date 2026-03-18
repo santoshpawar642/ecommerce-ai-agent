@@ -40,3 +40,6 @@ Run the script and ask a question in plain English:
 Bash
 python agent_final.py
 Example Question: "What was the total revenue in Pune last month?"
+
+## 📊 Live Demo (Proof of Concept)
+![Agent Execution Result](result_screenshot.png)
