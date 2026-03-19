@@ -43,3 +43,12 @@ Example Question: "What was the total revenue in Pune last month?"
 
 ## 📊 Live Demo (Proof of Concept)
 ![Agent Execution Result](result_screenshot.png)
+
+### 🧠 Advanced AI Logic
+The agent now uses **Few-Shot Prompting** and **Llama 3.1 70B** to handle complex analytical queries:
+* **Aggregation Support:** Correctively identifies `AVG`, `SUM`, and `COUNT`.
+* **Analytical Ranking:** Handles `GROUP BY`, `ORDER BY`, and `LIMIT` logic automatically.
+* **Self-Correction:** Automatically retries up to 3 times if Snowflake returns a syntax error.
+
+#### **Logic Test Result:**
+![Highest Average Revenue Test](agent_logic_test.png)
