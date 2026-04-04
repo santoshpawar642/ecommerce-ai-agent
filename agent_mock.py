@@ -1,16 +1,20 @@
+from pathlib import Path
+import sys
+
 import snowflake.connector
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 
-# --- 1. Configuration (Updated with your Screenshot details) ---
-SNOWFLAKE_CONFIG = {
-    "user": "SANTO642",             # Your Login name from screenshot
-    "password": "Kkomal@9975155925", 
-    "account": "BIJXYOG-TR26698",   # Your Account identifier
-    "warehouse": "COMPUTE_WH",
-    "database": "ECOM_DB",
-    "schema": "GOLD"
-}
+
+ROOT = Path(__file__).resolve().parent
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from ecommerce_ai_agent.config import load_snowflake_config
+
+
+SNOWFLAKE_CONFIG = load_snowflake_config().to_connector_kwargs()
 
 # --- 2. State Definition ---
 class AgentState(TypedDict):

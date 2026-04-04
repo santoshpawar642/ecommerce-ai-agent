@@ -1,54 +1,75 @@
-## 🚀 How to Run
-To run this agent locally, follow these steps:
+# Ecommerce AI Agent
 
-1. Prerequisites
-Python 3.9+
+Natural-language analytics agent for querying the ecommerce Gold layer in Snowflake.
 
-A Snowflake account (Trial or Enterprise)
+## What it does
 
-A dataset in Snowflake (Table: ECOM_DB.GOLD.FACT_SALES)
+- converts English questions into Snowflake SQL with Cortex
+- executes read-only queries against curated analytics tables
+- explains recent monitoring anomalies for debugging-style questions
+- exposes both a Python entrypoint and a Streamlit chat UI
 
-2. Installation
-Clone the repository and install the dependencies:
+## Project structure
 
-Bash
-git clone https://github.com/santoshpawar642/ecommerce-ai-agent.git
-cd ecommerce-ai-agent
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+```text
+src/ecommerce_ai_agent/
+  config.py
+  database.py
+  sql_safety.py
+  agent.py
+  ui.py
+
+agent_final.py   # backward-compatible Python entrypoint
+app.py           # Streamlit entrypoint
+```
+
+## Local setup
+
+1. Use Python 3.10 or 3.11.
+2. Create and activate a virtual environment.
+3. Install dependencies.
+4. Copy `.env.example` to `.env` and fill in your Snowflake values.
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-3. Setup Snowflake Permissions
-Log into your Snowflake Worksheet and ensure your user has access to Cortex AI:
+cp .env.example .env
+```
 
-SQL
-GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE ACCOUNTADMIN;
-4. Configuration
-Open agent_final.py and update the SNOWFLAKE_CONFIG dictionary with your credentials:
+## Required environment variables
 
-Python
-SNOWFLAKE_CONFIG = {
-    "user": "YOUR_USERNAME",
-    "password": "YOUR_PASSWORD",
-    "account": "YOUR_ACCOUNT_ID",
-    "warehouse": "COMPUTE_WH",
-    "database": "ECOM_DB",
-    "schema": "GOLD"
-}
-5. Launch the Agent
-Run the script and ask a question in plain English:
+```env
+SNOWFLAKE_USER=your_username
+SNOWFLAKE_PASSWORD=your_password
+SNOWFLAKE_ACCOUNT=your_account_identifier
+SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+SNOWFLAKE_DATABASE=SPARK_LAKEHOUSE_DB
+SNOWFLAKE_SCHEMA=GOLD_LAYER
+```
 
-Bash
+## Run the agent
+
+CLI-style invocation:
+
+```bash
 python agent_final.py
-Example Question: "What was the total revenue in Pune last month?"
+```
 
-## 📊 Live Demo (Proof of Concept)
+Streamlit UI:
+
+```bash
+streamlit run app.py
+```
+
+## Safety notes
+
+- generated SQL is restricted to read-only `SELECT` statements
+- only approved analytics tables are allowed
+- credentials are loaded from environment variables instead of source code
+
+## Demo
+
 ![Agent Execution Result](result_screenshot.png)
 
-### 🧠 Advanced AI Logic
-The agent now uses **Few-Shot Prompting** and **Llama 3.1 70B** to handle complex analytical queries:
-* **Aggregation Support:** Correctively identifies `AVG`, `SUM`, and `COUNT`.
-* **Analytical Ranking:** Handles `GROUP BY`, `ORDER BY`, and `LIMIT` logic automatically.
-* **Self-Correction:** Automatically retries up to 3 times if Snowflake returns a syntax error.
-
-#### **Logic Test Result:**
 ![Highest Average Revenue Test](agent_logic_test.png)
